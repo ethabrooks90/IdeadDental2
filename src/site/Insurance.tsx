@@ -5,13 +5,9 @@ import { ButtonLink, Eyebrow } from './ui/Button'
 
 const ease = [0.2, 0.7, 0.2, 1] as const
 
-// The price table is real (the live homepage's "Compare our prices" table),
-// but its "Other dentist" column is a competitor-price claim with no stated
-// source, so it needs the practice's sign-off before it's published. Until
-// PRICING_APPROVED is flipped it only renders in local development (with a
-// visible "pending" badge) and never in a production build.
-const PRICING_APPROVED = false
-const SHOW_PRICING = PRICING_APPROVED || import.meta.env.DEV
+// The practice's own updated price list (2026-10-01), sent by the practice —
+// approved for publishing. The old table's unsourced "Other dentist"
+// comparison is gone, which was the only reason it was held back.
 
 // Facts only, all already published on the live site (FAQ + services pages).
 const points = [
@@ -68,13 +64,13 @@ export default function Insurance() {
           </ButtonLink>
         </div>
 
-        {SHOW_PRICING && <PriceTable reduce={reduce} pending={!PRICING_APPROVED} />}
+        <PriceList reduce={reduce} />
       </div>
     </section>
   )
 }
 
-function PriceTable({ reduce, pending }: { reduce: boolean; pending: boolean }) {
+function PriceList({ reduce }: { reduce: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: reduce ? 0 : 20 }}
@@ -85,44 +81,21 @@ function PriceTable({ reduce, pending }: { reduce: boolean; pending: boolean }) 
       // the dark section, dark ink text, cyan-ink prices for contrast.
       className="mt-20 rounded-[1.5rem] bg-paper p-5 text-ink sm:p-8 lg:mt-28"
     >
-      {pending && (
-        <p className="mb-6 text-[12px] leading-relaxed text-amber-800">
-          <span className="mr-2 rounded bg-amber-500/15 px-2 py-0.5 font-medium tracking-[0.1em] uppercase">Pending client approval</span>
-          Visible in local preview only — not included in the published site. The “Other dentist” prices have no stated source on
-          the live site; confirm them before publishing.
-        </p>
-      )}
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <h3 className="font-display text-2xl font-light tracking-[-0.02em] text-ink sm:text-3xl">Compare our prices</h3>
-      </div>
+      <h3 className="font-display text-2xl font-light tracking-[-0.02em] text-ink sm:text-3xl">Our prices</h3>
 
-      <table className="mt-8 w-full border-collapse text-left">
-        <caption className="sr-only">Our prices compared with other dentists</caption>
-        <thead>
-          <tr className="border-b border-ink/12 text-[11px] tracking-[0.16em] text-ink/55 uppercase">
-            <th scope="col" className="py-3 pr-4 font-medium">
-              Treatment
-            </th>
-            <th scope="col" className="py-3 pr-4 text-right font-medium text-cyan-ink">
-              Our price
-            </th>
-            <th scope="col" className="py-3 text-right font-medium">
-              Other dentist
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {pricing.map((row) => (
-            <tr key={row.item} className="border-b border-ink/12 transition-colors duration-300 hover:bg-ink/[0.03]">
-              <th scope="row" className="py-4 pr-4 font-display text-[15px] font-normal text-ink sm:text-lg">
-                {row.item}
-              </th>
-              <td className="py-4 pr-4 text-right font-display text-[15px] text-cyan-ink tabular-nums sm:text-lg">{row.ours}</td>
-              <td className="py-4 text-right text-[14px] text-ink/55 tabular-nums sm:text-base">{row.other}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Two columns on wide screens so 13 items don't make one very tall
+          list; one column on phones. */}
+      <dl className="mt-6 grid gap-x-12 sm:mt-8 lg:grid-cols-2">
+        {pricing.map((row) => (
+          <div
+            key={row.item}
+            className="flex items-baseline justify-between gap-4 border-b border-ink/12 py-3.5 transition-colors duration-300 hover:bg-ink/[0.03] sm:py-4"
+          >
+            <dt className="font-display text-[15px] text-ink sm:text-lg">{row.item}</dt>
+            <dd className="shrink-0 text-right font-display text-[15px] text-cyan-ink tabular-nums sm:text-lg">{row.price}</dd>
+          </div>
+        ))}
+      </dl>
     </motion.div>
   )
 }

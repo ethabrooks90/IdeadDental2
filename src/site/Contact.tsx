@@ -38,7 +38,9 @@ export default function Contact() {
   // days with limited hours (e.g. Monday = surgeries only) show that note.
   const pickedDay = weekdayOf(fields.date)
   const dayHours = hours.find((h) => h.day === pickedDay)
-  const dateClosed = dayHours?.time === 'Closed'
+  // Saturdays: open only the 2nd and 4th Saturday of each month.
+  const offSaturday = pickedDay === 'Saturday' && ![2, 4].includes(Math.ceil(new Date(`${fields.date}T12:00:00`).getDate() / 7))
+  const dateClosed = dayHours?.time === 'Closed' || offSaturday
   // Local date (en-CA formats as YYYY-MM-DD) — toISOString would be UTC and
   // could make "today" unselectable in the evening.
   const minDate = new Date().toLocaleDateString('en-CA')
@@ -47,7 +49,13 @@ export default function Contact() {
     name: !fields.name.trim() ? 'Please enter your name.' : '',
     phone: fields.phone.replace(/\D/g, '').length < 10 ? 'Please enter a phone number we can call.' : '',
     email: !/^\S+@\S+\.\S+$/.test(fields.email) ? 'Please enter a valid email address.' : '',
-    date: !fields.date ? 'Please choose a preferred date.' : dateClosed ? `We're closed on ${pickedDay}s — please pick another day.` : '',
+    date: !fields.date
+      ? 'Please choose a preferred date.'
+      : offSaturday
+        ? "We're only open the 2nd and 4th Saturday of each month — please pick another day."
+        : dateClosed
+          ? `We're closed on ${pickedDay}s — please pick another day.`
+          : '',
   }
   const valid = !Object.values(errors).some(Boolean)
 

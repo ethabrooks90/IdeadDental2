@@ -17,12 +17,14 @@ export const business = {
 }
 
 export const hours = [
-  { day: 'Monday', time: '10:00 AM – 4:00 PM', note: 'Surgeries only' },
+  // Updated from the practice, 2026-10-01. Sunday wasn't in that update, so it
+  // stays as previously published (closed).
+  { day: 'Monday', time: '8:30 AM – 2:00 PM', note: 'Surgeries only' },
   { day: 'Tuesday', time: '10:00 AM – 6:00 PM', note: 'General dentistry & walk-ins' },
   { day: 'Wednesday', time: '10:00 AM – 6:00 PM', note: 'General dentistry & walk-ins' },
-  { day: 'Thursday', time: '11:00 AM – 4:00 PM', note: 'Braces adjustments & surgery' },
+  { day: 'Thursday', time: '8:30 AM – 2:00 PM', note: 'Surgeries only' },
   { day: 'Friday', time: 'Closed', note: '' },
-  { day: 'Saturday', time: 'By appointment only', note: '' },
+  { day: 'Saturday', time: '2nd & 4th Saturdays', note: 'Of each month only' },
   { day: 'Sunday', time: 'Closed', note: '' },
 ]
 
@@ -112,16 +114,23 @@ export const toothParts = [
   },
 ] as const
 
-// Live homepage pricing table — confirmed as source of truth over the
-// unused/legacy table found commented out in the New Patients page source.
+// Updated price list sent by the practice (2026-10-01). Replaces the old
+// live-site "compare our prices" table — this list has the practice's own
+// prices only, no competitor ("other dentist") figures.
 export const pricing = [
-  { item: 'Adult Cleaning', ours: '$75', other: '$98' },
-  { item: 'Simple Extraction', ours: '$250', other: '$350' },
-  { item: '2-Surface White Filling', ours: '$180', other: '$224' },
-  { item: 'Porcelain Crown', ours: '$900', other: '$1,136' },
-  { item: 'Child or Adult Braces', ours: 'Starting at $3,200', other: '$5,755' },
-  { item: 'Invisalign', ours: '$3,800', other: '$5,978' },
-  { item: 'Single Implant with Crown', ours: '$3,500', other: '$5,462' },
+  { item: 'Adult cleaning', price: '$75' },
+  { item: 'Full mouth debridement', price: '$200' },
+  { item: 'Deep cleaning', price: '$500' },
+  { item: 'Filling', price: '$250 and up' },
+  { item: 'Simple extraction', price: '$350' },
+  { item: 'Surgical extraction', price: '$450' },
+  { item: 'Bone graft and membrane', price: '$600' },
+  { item: 'Crown', price: '$1,200' },
+  { item: 'Root canal', price: '$800' },
+  { item: 'Denture or partial denture', price: '$1,200 per arch' },
+  { item: 'Implant', price: '$3,500' },
+  { item: 'Implant crown and abutment', price: '$1,800' },
+  { item: 'Braces', price: '$2,500 – $5,500' },
 ]
 
 export const doctors = [
@@ -225,7 +234,7 @@ export const faqs = [
     category: 'General',
     question: 'What are your office hours?',
     answer:
-      "Tuesday and Wednesday, 10am–6pm, for general dentistry and walk-ins. Thursday, 11am–4pm, for braces adjustments and surgery. Monday, 10am–4pm, for surgeries only. Saturday is by appointment; we're closed Friday and Sunday.",
+      "Tuesday and Wednesday, 10am–6pm, for general dentistry and walk-ins. Monday and Thursday, 8:30am–2pm, for surgeries only. We're open the 2nd and 4th Saturday of each month, and closed Friday and Sunday.",
   },
   {
     category: 'General',
@@ -236,7 +245,7 @@ export const faqs = [
     category: 'General',
     question: 'Can I walk in without an appointment?',
     answer:
-      "Yes — Tuesday and Wednesday are open to walk-ins for general dentistry. Monday, Thursday, and Saturday are appointment-based (surgery, braces adjustments, and by-appointment hours).",
+      "Yes — Tuesday and Wednesday are open to walk-ins for general dentistry. Monday and Thursday are for surgeries only, and we're also open the 2nd and 4th Saturday of each month.",
   },
   {
     category: 'General',

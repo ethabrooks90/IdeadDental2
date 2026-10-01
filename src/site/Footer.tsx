@@ -9,10 +9,10 @@ const ease = [0.2, 0.7, 0.2, 1] as const
 
 // Real hours, with genuinely identical adjacent days merged (Tue/Wed) —
 // no values invented, only the grouping is a display choice.
-const hourGroups = hours.reduce<{ days: string[]; time: string }[]>((groups, h) => {
+const hourGroups = hours.reduce<{ days: string[]; time: string; note: string }[]>((groups, h) => {
   const last = groups.at(-1)
-  if (last && last.time === h.time && h.time !== 'Closed') last.days.push(h.day)
-  else groups.push({ days: [h.day], time: h.time })
+  if (last && last.time === h.time && last.note === h.note && h.time !== 'Closed') last.days.push(h.day)
+  else groups.push({ days: [h.day], time: h.time, note: h.note })
   return groups
 }, [])
 const dayLabel = (days: string[]) => (days.length === 1 ? days[0].slice(0, 3) : `${days[0].slice(0, 3)}–${days.at(-1)!.slice(0, 3)}`)
@@ -77,7 +77,13 @@ export default function Footer() {
                 {hourGroups.map((g) => (
                   <div key={g.days.join()} className="flex justify-between gap-2 sm:gap-3">
                     <dt className="shrink-0">{dayLabel(g.days)}</dt>
-                    <dd className={`text-right whitespace-nowrap tabular-nums ${g.time === 'Closed' ? 'text-ink/60' : ''}`}>{g.time}</dd>
+                    <dd className={`text-right whitespace-nowrap tabular-nums ${g.time === 'Closed' ? 'text-ink/60' : ''}`}>
+                      {g.time}
+                      {/* The note is part of the hours ("Surgeries only", "2nd & 4th
+                          Saturdays… of each month only") — the footer is now the
+                          only place the full week is listed. */}
+                      {g.note && <span className="block text-[10px] whitespace-normal text-ink/60 sm:text-[11px]">{g.note}</span>}
+                    </dd>
                   </div>
                 ))}
               </dl>

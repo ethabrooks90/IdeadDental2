@@ -27,11 +27,14 @@ Every push to `main` builds the site and publishes it to GitHub Pages
 automatically. In the repo's **Settings → Pages**, set **Source** to
 **GitHub Actions** once.
 
+## Content updates
+
+Hours, prices, services, doctors, reviews and FAQ answers all live in
+`src/data/content.ts`. Hours and prices were last updated from the practice
+on 2026-10-01.
+
 ## Pending before launch
 
-- **Price comparison table** (Insurance): hidden on the published site until
-  the practice approves the "Other dentist" prices — set `PRICING_APPROVED`
-  to `true` in `src/site/Insurance.tsx`.
 - **Contact form**: there's no backend yet, so a request becomes a
   ready-to-send text message to the office. Set `FORM_ENDPOINT` in
   `src/site/Contact.tsx` to a form service URL (e.g. Formspree) to send

@@ -91,7 +91,7 @@ export const sections: SiteSection[] = [
     status: 'built',
     plan: [
       '“We accept all insurance plans” + payment plans',
-      'Pricing table — PENDING CLIENT APPROVAL before it ships',
+      'Price list — updated by the practice 2026-10-01, published',
     ],
     data: 'pricing',
   },
